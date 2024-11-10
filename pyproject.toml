@@ -1,0 +1,127 @@
+[tool.poetry]
+name = "chatbotaiollama"
+version = "0.1.0"
+description = "Chat bot AI"
+authors = ["san <deadcove@mail.ru>"]
+readme = "README.md"
+packages = [
+    { include = "src" },
+]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+aiogram = "^3.14.0"
+deep-translator = "^1.11.4"
+pydantic-settings = "^2.6.1"
+ollama = "^0.3.3"
+motor = "^3.6.0"
+odmantic = "^1.0.2"
+
+[tool.poetry.group.dev.dependencies]
+ruff = ">=0.0.287"
+black = "^24.10.0"
+isort = "^5.13.2"
+
+[tool.black]
+line-length = 80
+target-version = ["py312"]
+
+[tool.isort]
+profile = "black"
+
+[tool.ruff]
+select = [
+    "E",    # pycodestyle
+    "F",    # Pyflakes
+    "W",    # Warning
+    "B",    # flake8-bugbear
+    "A",    # flake8-builtins
+    "C4",   # flake8-comprehensions
+    "T10",  # flake8-debugger
+    "EXE",  # flake8-executable,
+    "ISC",  # flake8-implicit-str-concat
+    "G",    # flake8-logging-format
+    "PIE",  # flake8-pie
+    "T20",  # flake8-print
+    "PT",   # flake8-pytest-style
+    "RSE",  # flake8-raise
+    "RET",  # flake8-return
+    "TID",  # flake8-tidy-imports
+    "ARG",  # flake8-unused-arguments
+    "PGH",  # pygrep-hooks
+    "PLC",  # Pylint Convention
+    "PLE",  # Pylint Errors
+    "PLW",  # Pylint Warnings
+    "RUF",  # Ruff-specific rules
+    # ** Things to potentially enable in the future **
+    # DTZ requires all usage of datetime module to have timezone-aware
+    # objects (so have a tz argument or be explicitly UTC).
+    # "DTZ",  # flake8-datetimez
+    # "PTH",  # flake8-use-pathlib
+    # "SIM",  # flake8-simplify
+]
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["ALL"]
+unfixable = []
+ignore = [
+    "D100",
+    "D101",
+    "D102",
+    "D103",
+    "D104",
+    "D107",
+    "D105",
+    "D106",
+    "D200",
+    "D400",
+    "D413",
+    "E501",
+    "E402",
+    "N815",
+    "N805",
+    "EXE002",
+    "RUF012",
+    "PGH003",
+    "A003",
+    "ARG002",
+    "RET504",
+    "RET502",
+    "RET505",
+    "G004",
+    "RUF100",
+]
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".git-rewrite",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+]
+# Same as Black.
+line-length = 80
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+# Assume Python 3.8
+target-version = "py312"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"

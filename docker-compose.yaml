@@ -1,0 +1,73 @@
+version: "3"
+
+services:
+  chat_bot:
+    build:
+      context: "."
+      dockerfile: "srv/bot/Dockerfile"
+    restart: on-failure
+    volumes:
+      - ./src:/docker_app/src
+    networks:
+      - bot-net
+    depends_on:
+      - ollama_serve
+      - mongodb
+
+  ollama_serve:
+    build:
+      context: "."
+      dockerfile: "srv/ollama/Dockerfile"
+    entrypoint: sh pull-model.sh ${OLLAMA_MODEL}
+    restart: always
+    expose:
+      - 11434
+    volumes:
+      - ollama-vol:/ollama
+    networks:
+      - bot-net
+
+  redis:
+    image: redis:alpine
+    restart: always
+    expose:
+      - 6379
+    networks:
+      - bot-net
+
+  mongodb:
+    image: mongo:latest
+    restart: always
+    expose:
+      - ${MONGODB_PORT}
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=${MONGODB_ADMIN_LOGIN}
+      - MONGO_INITDB_ROOT_PASSWORD=${MONGODB_ADMIN_PASSWORD}
+    volumes:
+      - mongodb-data:/data/db
+    networks:
+      - bot-net
+
+  mongodb-express:
+    image: mongo-express
+    restart: always
+    ports:
+      - 8081:8081
+    environment:
+      ME_CONFIG_MONGODB_ADMINUSERNAME: ${MONGODB_ADMIN_LOGIN}
+      ME_CONFIG_MONGODB_ADMINPASSWORD: ${MONGODB_ADMIN_PASSWORD}
+      ME_CONFIG_MONGODB_URL: mongodb://${MONGODB_ADMIN_LOGIN}:${MONGODB_ADMIN_PASSWORD}@mongodb:${MONGODB_PORT}/
+      ME_CONFIG_BASICAUTH: false
+    networks:
+      - bot-net
+
+
+networks:
+  bot-net:
+    driver: bridge
+
+volumes:
+  ollama-vol:
+    driver: local
+  mongodb-data:
+    driver: local
