@@ -29,7 +29,7 @@ drop:
 	docker compose down -v
 
 up:
-	docker compose up --remove-orphans --build \
+	docker compose up --remove-orphans --build -d \
 		chat_bot \
 		ollama_serve \
 		mongodb \

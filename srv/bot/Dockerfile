@@ -1,9 +1,9 @@
-FROM python:3.12
+FROM python:3.12-slim
 
 ENV PYTHONFAULTHANDLER=1 \
   PYTHONUNBUFFERED=1 \
   PYTHONHASHSEED=random \
-  PYTHONPATH=/docker_app \
+  PYTHONPATH=/app \
   PIP_NO_CACHE_DIR=off \
   PIP_DISABLE_PIP_VERSION_CHECK=on \
   PIP_DEFAULT_TIMEOUT=100 \
@@ -13,17 +13,15 @@ ENV PYTHONFAULTHANDLER=1 \
   POETRY_CACHE_DIR='/var/cache/pypoetry' \
   POETRY_HOME='/usr/local'
 
-WORKDIR /docker_app
+RUN pip install poetry
+WORKDIR /app
+COPY README.md pyproject.toml poetry.lock ./
 RUN --mount=type=cache,target=/root/.cache \
-    curl -sSL https://install.python-poetry.org | python3 -
-
-COPY pyproject.toml poetry.lock ./
-RUN --mount=type=cache,target=/root/.cache \
-    poetry install --no-dev
+    poetry install --no-root
 
 COPY .env ./.env
 COPY ./src ./src
 
-WORKDIR /docker_app/src/bot
+WORKDIR /app/src/bot
 
 CMD ["python", "main.py"]

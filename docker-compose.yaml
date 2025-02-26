@@ -1,5 +1,3 @@
-version: "3"
-
 services:
   chat_bot:
     build:
@@ -7,7 +5,7 @@ services:
       dockerfile: "srv/bot/Dockerfile"
     restart: on-failure
     volumes:
-      - ./src:/docker_app/src
+      - ./src:/app/src
     networks:
       - bot-net
     depends_on:
